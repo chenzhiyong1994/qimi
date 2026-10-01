@@ -129,7 +129,11 @@ Logo 增量安装包 SHA-256：
 
 最终核心 12 项测试通过，0 failures / errors / skipped，32.225 秒；APP 2 项测试通过，0 failures / errors / skipped。Debug / Release / androidTest 构建及两种 lint 通过，103 秒；首次命令行任务数组传递错误在测试前停止，纠正为 PowerShell 数组调用后完成全部检查。两次原生日志分别保留在 `output/verification/opensource-build-first-call.txt` 与 `opensource-build.txt`。本轮没有操作模拟器或重跑设备测试，设备行为沿用前述增量证据。
 
-官方 Gradle 8.14.5 Wrapper JAR 校验通过，SHA-256 为 `7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172`。公开前须对精确提交完整审计并核对远端 OID；实际发布状态由[项目状态](project-status.md)维护。本次仅公开源码与成品资产，不提供正式签名安装版，不将源码开源视为完整首版验收通过。
+官方 Gradle 8.14.5 Wrapper JAR 校验通过，SHA-256 为 `7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172`。Debug / Release 最终 Manifest 检查及文档检查通过。本次仅公开源码与成品资产，不提供正式签名安装版，不将源码开源视为完整首版验收通过。
+
+创建公开仓库前完成计划地址的完整提交审计，创建后重新绑定实际 `https://github.com/chenzhiyong1994/qimi.git`、`refs/heads/main` 与空远端状态审计：1 个根提交、79 个 blob，0 blocker。14 个 review 为 4 张第一方品牌图、2 处 SHA-256 数字段、7 处类型 / 运行时值 / 具名合成字段引用及 1 个官方 Wrapper JAR；实际内容核验后全部解决。`verify` 通过，随后由守门器发布精确分支并回读 GitHub ref，确认首次公开 OID `4e334e95130752249e2f7ea05b649b43045a0e9b` 与本地一致。
+
+GitHub API 已确认仓库公开、默认分支 main、Apache-2.0；凭据扫描与推送保护为 enabled，发布后告警查询返回 0 条。这是查询时点的纵深检查结果，不替代本地完整审计。后续文档状态同步同样按精确提交审计后推送；当前入口见[项目状态](project-status.md)。
 
 ## 验收映射与限制
 

@@ -36,7 +36,7 @@
 | D5 | 旧资料格式与用户任务；先采用原文暂存、手动核对 | 脱敏结构样本、真实任务观察；不得收集用户真实密码 | 原型验证前；产品负责人待指定 | 待调研 |
 | D6 | S1 采用主密码 16–128 code points、显示 10 秒、复制约 30 秒、闲置 5 分钟；字段上限沿用方案 | 已用默认配置见[开发文档](development.md)；可用性、设备性能与完整容错仍待验证 | 内测后；产品/安全负责人待指定 | S1 配置已记录，产品默认值未最终冻结 |
 | D7 | 原生 Kotlin 2.2.20 / Compose，AGP 8.11.1 / Gradle 8.14.5 / JDK 17；app + vault-core | [重建入口与精确版本](development.md)，独立 lockfile 与制品 SHA-256；[实际证据](validation-s1.md) | 工程创建与 S1；执行 Agent | 工程已建立 |
-| D8 | 独立 Git 仓库、GitHub `chenzhiyong1994/qimi` 与 Apache-2.0 | 用户明确公开发布授权；[第三方许可核对](../THIRD_PARTY_NOTICES.md)；精确提交审计与远端 OID 核对 | 本次源码开源；执行 Agent | 本地已初始化，远端发布结果见项目状态 |
+| D8 | 独立 Git 仓库、GitHub `chenzhiyong1994/qimi` 与 Apache-2.0 | 用户明确公开发布授权；[第三方许可核对](../THIRD_PARTY_NOTICES.md)；精确提交审计与远端 OID 核对通过 | 2026-10-01 首次源码开源；执行 Agent | main 已公开推送；正式安装版另行验收与发布 |
 
 ## 决策落地时如何维护
 
