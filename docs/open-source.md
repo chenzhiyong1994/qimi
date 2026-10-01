@@ -48,6 +48,10 @@ pwsh -NoProfile -File scripts/check-docs.ps1
 
 2026-10-01：产品宣传 Banner、完整双语 README 与静态双语主页已接入。Banner 与合成界面原图已实际查看，宣传素材说明见[素材来源](../assets/promo/README.md)。本地文件浏览通过中文 / English 的 1440、768、390、320 像素八组无横向溢出与图片加载检查，语言文案 / 标题 / README 链接切换、偏好保留、减少动效检查通过，未记录控制台或页面错误；桌面中文与手机英文完整页面已目视检查。
 
-本地浏览器在重载后把根 `lang` 改回 `zh-CN`，同时仍显示英文文案；切换操作即时设置 `en` 的检查通过，但尚不能把本地重载中的根语言属性标记为稳定。需在线上页面继续核实。后台 HTTP 预览服务的启动被自动审批拒绝（`blocked by policy`），因此本地检查使用静态文件页面。
+本地文件页面重载曾出现根 `lang` 回到 `zh-CN`、英文文案不变的情况；HTTPS 线上重新加载及移除查询参数后，英文文案与 `lang=en` 均保持，语言偏好保留检查通过。后台 HTTP 预览服务的启动被自动审批拒绝（`blocked by policy`），本地检查使用静态文件页面，线上以真实 HTTPS 页面核实。
 
-本节尚未记录本轮公开更新、Pages 部署及线上验证完成。首次源码公开已有记录，见[项目状态](project-status.md)与[S1 验证记录](validation-s1.md)；不复用首次源码推送来宣称主页已上线。
+宣传增量提交 `68669b31cdde17346c678aa4a64f16e2cd657bfe` 已通过增量审计：1 个新增提交、0 blocker，3 张新图经实际像素检查解决全部语义 review；守门器精确发布 `refs/heads/main`，远端 OID 回读一致。GitHub 纵深凭据扫描告警查询为 0 条。
+
+[首次 Pages 部署](https://github.com/chenzhiyong1994/qimi/actions/runs/36830508349)成功，主页为 [栖密 Qimi](https://chenzhiyong1994.github.io/qimi/)，强制 HTTPS；仓库 About 的 Website 与两份 README 一致。线上两种语言的 1440、768、390、320 像素八组检查通过，无横向溢出、全部图片加载，未记录页面或控制台错误；中文桌面与 320 像素英文页面已查看。HTML、CSS、JS 和三张图片均返回 HTTP 200，CSS / JS / 图片与已审本地文件字节一致。
+
+键盘检查发现跳转正文后焦点未转移，已给 `main` 增加 `tabindex=-1`；本地跳过导航、正文焦点、Enter 切换语言及 `lang` 检查通过。此收尾改动随发布记录同步，线上需回读相同标记并重跑聚焦键盘检查。首次源码公开与 APP 行为验收仍见[项目状态](project-status.md)及[S1 验证记录](validation-s1.md)，没有新增正式 APK 分发。

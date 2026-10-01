@@ -20,7 +20,7 @@
 | 系统备份与迁移排除 | 配置已检查，实测未完成 | 无 INTERNET、禁备份及两代排除规则；当前 `bmgr` disabled 不能证明云备份或 D2D 排除有效 |
 | 后续 S2–S6 | 未实现 | 备份恢复、其他登录方式、整理、历史管理、生物识别和自动填充等按路线推进 |
 | Git、远程、推送、发布 | 源码已公开，main 已推送 | [GitHub 栖密 Qimi](https://github.com/chenzhiyong1994/qimi)，Apache-2.0；精确提交审计与首次远端 OID 核对通过；未发布正式签名安装版 |
-| 开源展示与项目主页 | 双语 README、产品 Banner 和主页已完成本地检查；部署待验证 | 独立宣传图、真实合成界面、双语静态主页与 Pages 配置已接入；[发布与验证记录](open-source.md) |
+| 开源展示与项目主页 | 已公开并上线，双语及窄屏检查通过 | 独立产品宣传 Banner、完整双语 README 与 [GitHub Pages 主页](https://chenzhiyong1994.github.io/qimi/)；线上八组布局 / 语言检查及资源字节核对通过；[发布与验证记录](open-source.md) |
 
 ## 本轮验证记录
 
