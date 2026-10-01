@@ -54,4 +54,4 @@ pwsh -NoProfile -File scripts/check-docs.ps1
 
 [首次 Pages 部署](https://github.com/chenzhiyong1994/qimi/actions/runs/36830508349)成功，主页为 [栖密 Qimi](https://chenzhiyong1994.github.io/qimi/)，强制 HTTPS；仓库 About 的 Website 与两份 README 一致。线上两种语言的 1440、768、390、320 像素八组检查通过，无横向溢出、全部图片加载，未记录页面或控制台错误；中文桌面与 320 像素英文页面已查看。HTML、CSS、JS 和三张图片均返回 HTTP 200，CSS / JS / 图片与已审本地文件字节一致。
 
-键盘检查发现跳转正文后焦点未转移，已给 `main` 增加 `tabindex=-1`；本地跳过导航、正文焦点、Enter 切换语言及 `lang` 检查通过。此收尾改动随发布记录同步，线上需回读相同标记并重跑聚焦键盘检查。首次源码公开与 APP 行为验收仍见[项目状态](project-status.md)及[S1 验证记录](validation-s1.md)，没有新增正式 APK 分发。
+键盘检查发现跳转正文后焦点未转移，已给 `main` 增加 `tabindex=-1`；本地跳过导航、正文焦点、Enter 切换语言及 `lang` 检查通过。收尾提交 `bc82636ecca8f404ac0aa4b8f52f3e2fc955300a` 通过增量审计与精确发布，[部署运行](https://github.com/chenzhiyong1994/qimi/actions/runs/36831005190)成功。线上回读 `tabindex=-1` 后重跑键盘跳转 / 语言切换 / 重载语言属性检查全部通过。GitHub 实际渲染的 README 已确认加载独立产品 Banner，English 与主页链接正确。首次源码公开与 APP 行为验收仍见[项目状态](project-status.md)及[S1 验证记录](validation-s1.md)，没有新增正式 APK 分发。
