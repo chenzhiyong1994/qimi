@@ -16,6 +16,7 @@
 - 验收步骤与覆盖面：[验收场景](docs/acceptance.md)。
 - 增量依赖：[迭代路线](docs/iteration-roadmap.md)；技术与范围选择：[决策记录](docs/decisions.md)。
 - 工程版本与重建：[开发文档](docs/development.md)；实际验证：[S1 记录](docs/validation-s1.md)；存储接口：[核心模块](vault-core/README.md)。
+- 开源展示、双语 README、项目主页与公开发布：[开源规范](docs/open-source.md)。
 
 ## 核心约束
 

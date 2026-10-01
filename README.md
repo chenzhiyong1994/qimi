@@ -1,8 +1,12 @@
 # 栖密 · Qimi
 
+**简体中文** · [English](README.en.md)
+
+[项目主页](https://chenzhiyong1994.github.io/qimi/) · [GitHub](https://github.com/chenzhiyong1994/qimi) · [问题反馈](https://github.com/chenzhiyong1994/qimi/issues)
+
 **密码留在本地，轻松留给日常。**
 
-![栖密品牌标记、名称与应用图标](assets/brand/qimi-brand-preview.png)
+![栖密产品宣传：密码留在本地，轻松留给日常](assets/promo/qimi-banner.png)
 
 栖密是一款面向 Android 的开源本地密码管理应用，用主密码保护账号资料，让记录、查找和手动取用更顺手。应用不申请 `INTERNET` 权限，不接入云账户、云同步、联网埋点或远程图标。
 
@@ -56,7 +60,7 @@ Debug 的标准 Android Emulator 解锁页提供“一键解锁测试库”，�
 
 ## 参与开发
 
-欢迎通过 Issues 提交可复现问题和通过 Pull Requests 改进实现、测试或文档。请使用合成资料，不上传真实密码库、密码、密钥或未脱敏日志。涉及密码库、恢复和自动填充的改动须保留现有安全边界，并提供对应验证证据。
+欢迎通过 [Issues](https://github.com/chenzhiyong1994/qimi/issues) 提交可复现问题和通过 [Pull Requests](https://github.com/chenzhiyong1994/qimi/pulls) 改进实现、测试或文档。请使用合成资料，不上传真实密码库、密码、密钥或未脱敏日志。涉及密码库、恢复和自动填充的改动须保留现有安全边界，并提供对应验证证据。
 
 维护与阅读入口：
 
@@ -65,5 +69,7 @@ Debug 的标准 Android Emulator 解锁页提供“一键解锁测试库”，�
 - [安全与数据规格](docs/security-and-data.md)、[验收场景](docs/acceptance.md)：数据边界与验证要求。
 - [开发文档](docs/development.md)、[核心模块](vault-core/README.md)、[决策记录](docs/decisions.md)：重建、存储契约与技术选择。
 - [品牌资产](assets/brand/README.md)：Logo 矢量、透明 PNG 与导出方式。
+
+## 许可证
 
 自有源码与成品品牌资产采用 [Apache-2.0](LICENSE)。第三方许可和归属见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 [NOTICE](NOTICE)。
