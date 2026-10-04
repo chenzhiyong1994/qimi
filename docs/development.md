@@ -1,6 +1,6 @@
 # Android 开发与重建
 
-当前工程交付路线中的 S1 建库与手动取用增量，品牌使用[产品方案](product-plan.md)中的“栖密”。只使用合成资料；备份恢复与完整安全验收完成前，不用于保管真实密码。实际证据以[验证记录](validation-s1.md)为准。
+当前工程交付路线中的 S1 建库、手动取用与基础密码生成增量，品牌使用[产品方案](product-plan.md)中的“栖密”。只使用合成资料；备份恢复与完整安全验收完成前，不用于保管真实密码。实际证据以[验证记录](validation-s1.md)为准。
 
 ## 工程与版本
 
@@ -56,14 +56,14 @@ adb -s emulator-5580 shell am instrument -w -r -e dedicatedSyntheticDevice true 
 pwsh -NoProfile -File scripts/android.ps1 -Task :app:assembleDebugAndroidTest
 adb -s emulator-5582 install -r app/build/outputs/apk/debug/app-debug.apk
 adb -s emulator-5582 install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true -e class com.localpasswordmanager.app.S1UiTest com.localpasswordmanager.app.dev.test/androidx.test.runner.AndroidJUnitRunner
+adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true -e class com.localpasswordmanager.app.S1UiTest,com.localpasswordmanager.app.PasswordGeneratorUiTest com.localpasswordmanager.app.dev.test/androidx.test.runner.AndroidJUnitRunner
 pwsh -NoProfile -File scripts/check-process-restart.ps1 -DeviceSerial emulator-5582 -DedicatedSyntheticDevice
 pwsh -NoProfile -File scripts/check-synthetic-data.ps1 -DeviceSerial emulator-5582 -DedicatedSyntheticDevice
 ```
 
 序列号仅是本轮示例，先用 `adb devices -l` 核对。本轮 UI 回归使用独立 AVD `local_password_manager_ui_regression`（`emulator-5582`）；用户现有 `emulator-5580` 保留数据，不运行重建夹具的套件。测试清理范围限目标 debug APP 的 `noBackupFilesDir/vault`，没有卸载 APP 或清理其他应用；新的专用 AVD 和旧 AVD 各自保留。
 
-普通设备套件选择 `S1UiTest`。独立进程检查先建立合成夹具，再 `force-stop` 且确认旧进程退出，最后单独运行不写库的 `ProcessRestartProbe`；缺少夹具或读取失败会失败，不跳过。
+普通设备套件选择 `S1UiTest` 与 `PasswordGeneratorUiTest`，Gradle 的默认类筛选同时包含两者，仍排除需要既有夹具的只读探针。可单独选择生成器类，验证默认 / 高级规则、取消与保存、锁定和重建；它同样重建专用合成库。普通与大字体深色面板的合成截图通过安全窗口内 View 软件绘制，保存在 APP 的 `cache/password-generator-ui/`。独立进程检查先建立合成夹具，再 `force-stop` 且确认旧进程退出，最后单独运行不写库的 `ProcessRestartProbe`；缺少夹具或读取失败会失败，不跳过。
 
 多台设备连接时优先使用上述显式 `adb -s` 定向安装和运行，避免未经核验的 Gradle 设备筛选触及保留数据的模拟器。S1 解锁测试在物理触摸前核验按钮完整可见和键盘 / 窗口布局稳定，不关闭动画或以语义回调替代触摸；原认证 120 秒超时与安全断言保持。
 
@@ -87,7 +87,7 @@ adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true 
 
 ## S1 的实现边界
 
-已接入创建主密码确认、新增账号密码记录、搜索、详情显示与复制。此增量没有编辑、非密码登录方式、草稿、标签、待整理、恢复、生物识别或自动填充入口。表单未保存时返回须明确丢弃；后台或锁定丢弃未保存输入，界面不承诺恢复。后续仍按[迭代路线](iteration-roadmap.md)推进。
+已接入创建主密码确认、新增账号密码记录、搜索、详情显示与复制，以及新增表单的密码生成底部面板。生成器采用 `java.security.SecureRandom`，无需新依赖；预设与高级规则、空值回退、长度边界见 UX-12，抽样及候选生命周期见 SEC-23。此增量没有编辑、非密码登录方式、草稿、生成器内复制、随机口令、标签、待整理、恢复、生物识别或自动填充入口。表单未保存时返回须明确丢弃；后台或锁定丢弃候选及未保存输入，界面不承诺恢复。后续仍按[迭代路线](iteration-roadmap.md)推进。
 
 主密码与字段按 Unicode code point 计数：主密码 16–128；名称 100、账号 256、密码 1024、网址 2048、备注 10000。账号、密码与主密码原值保留；未配对 UTF-16 surrogate 拒绝，不替换。搜索仅用名称、账号与网址 host 的 NFC / 大小写派生值，不覆盖密码、备注或 URL path / query，不写磁盘索引。
 

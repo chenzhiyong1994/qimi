@@ -242,6 +242,7 @@ private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
     var more by remember { mutableStateOf(false) }
     var discard by remember { mutableStateOf(false) }
     var visible by remember { mutableStateOf(false) }
+    var generatorOpen by remember { mutableStateOf(false) }
     val focus = LocalFocusManager.current
     LaunchedEffect(visible) { if (visible) { delay(10_000); visible = false } }
     fun back() {
@@ -261,6 +262,16 @@ private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
             leading = VaultIconKind.User, placeholder = "邮箱、手机号或用户名")
         Field(password, { vault.touch(); password = it }, "密码（必填）", "entry_password", secret = true,
             revealed = visible, enabled = !state.busy, leading = VaultIconKind.Key, onReveal = { visible = !visible })
+        OutlinedButton(onClick = {
+            vault.touch()
+            focus.clearFocus()
+            visible = false
+            generatorOpen = true
+        }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().testTag("open_password_generator")) {
+            VaultIcon(VaultIconKind.Key, null, Modifier.size(18.dp))
+            Spacer(Modifier.width(8.dp))
+            Text("自动生成密码")
+        }
     }
     Panel {
         TextButton(onClick = { more = !more }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().testTag("more_info")) {
@@ -288,6 +299,18 @@ private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
         text = { Text("丢弃后无法恢复。继续编辑并保存，或明确丢弃。") },
         confirmButton = { TextButton(onClick = { discard = false; vault.list() }) { Text("丢弃输入") } },
         dismissButton = { TextButton(onClick = { discard = false }) { Text("继续编辑") } })
+    if (generatorOpen) PasswordGeneratorSheet(
+        onInteraction = vault::touch,
+        onDismiss = { generatorOpen = false },
+        onUse = { candidate ->
+            val active = vault.ui
+            if (active.epoch == state.epoch && active.page == Page.ADD && !active.busy) {
+                password = candidate
+                visible = false
+            }
+            generatorOpen = false
+        },
+    )
 }
 
 @Composable

@@ -14,7 +14,8 @@ android {
         versionCode = 1
         versionName = "0.1.0-dev"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["class"] = "com.localpasswordmanager.app.S1UiTest"
+        testInstrumentationRunnerArguments["class"] =
+            "com.localpasswordmanager.app.S1UiTest,com.localpasswordmanager.app.PasswordGeneratorUiTest"
     }
     buildTypes {
         debug { applicationIdSuffix = ".dev" }
