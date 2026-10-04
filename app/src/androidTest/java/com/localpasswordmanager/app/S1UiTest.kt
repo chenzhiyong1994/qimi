@@ -71,6 +71,37 @@ class S1UiTest {
     }
 
     @Test
+    fun masterPasswordMinimumAllowsEightCharacters() {
+        // 公开合成主密码，恰好 8 个 ASCII 字符；只用于专用测试模拟器。
+        val eightCharacterMaster = "Synt8!ab"
+        val sevenCharacterMaster = eightCharacterMaster.dropLast(1)
+        input("master_password", sevenCharacterMaster)
+        input("master_confirm", sevenCharacterMaster)
+        click("create_vault")
+
+        compose.onNodeWithText("请设置 8–128 个字符的主密码，空格也会保留").assertExists()
+        compose.onNodeWithTag("master_confirm").assertExists()
+        compose.onNodeWithTag("new_entry").assertDoesNotExist()
+        assertFalse(vaultFile().exists())
+
+        input("master_password", eightCharacterMaster)
+        input("master_confirm", eightCharacterMaster)
+        click("create_vault")
+        waitFor("new_entry")
+        assertTrue(vaultFile().isFile)
+        addSyntheticEntry()
+        click("lock_vault")
+        assertLocked()
+
+        unlock(eightCharacterMaster)
+        waitFor("new_entry")
+        openOnlyEntry()
+        assertPasswordHidden()
+        click("show_password")
+        compose.onNodeWithTag("detail_password_text").assertTextEquals(RAW_ENTRY_FIXTURE)
+    }
+
+    @Test
     fun savedFieldsSurviveSearchBackgroundLockAndActivityRecreation() {
         createVaultAndEntry()
         assertPasswordHidden()

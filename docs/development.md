@@ -89,7 +89,7 @@ adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true 
 
 已接入创建主密码确认、新增账号密码记录、搜索、详情显示与复制，以及新增表单的密码生成底部面板。生成器采用 `java.security.SecureRandom`，无需新依赖；预设与高级规则、空值回退、长度边界见 UX-12，抽样及候选生命周期见 SEC-23。此增量没有编辑、非密码登录方式、草稿、生成器内复制、随机口令、标签、待整理、恢复、生物识别或自动填充入口。表单未保存时返回须明确丢弃；后台或锁定丢弃候选及未保存输入，界面不承诺恢复。后续仍按[迭代路线](iteration-roadmap.md)推进。
 
-主密码与字段按 Unicode code point 计数：主密码 16–128；名称 100、账号 256、密码 1024、网址 2048、备注 10000。账号、密码与主密码原值保留；未配对 UTF-16 surrogate 拒绝，不替换。搜索仅用名称、账号与网址 host 的 NFC / 大小写派生值，不覆盖密码、备注或 URL path / query，不写磁盘索引。
+主密码与字段按 Unicode code point 计数：主密码 8–128；名称 100、账号 256、密码 1024、网址 2048、备注 10000。账号、密码与主密码原值保留；未配对 UTF-16 surrogate 拒绝，不替换。搜索仅用名称、账号与网址 host 的 NFC / 大小写派生值，不覆盖密码、备注或 URL path / query，不写磁盘索引。
 
 Android 层把正式库和候选/回退文件放在 `noBackupFilesDir/vault`，配置 `allowBackup=false`、旧版与 cloud / device-transfer 排除规则；目录 `fsync` 适配由 [AndroidDurability.kt](../app/src/main/java/com/localpasswordmanager/app/AndroidDurability.kt)实现。系统云备份、D2D 和厂商迁移必须另行实测，当前不能宣称全部外流路径验证通过。
 

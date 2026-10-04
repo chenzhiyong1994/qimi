@@ -166,6 +166,16 @@ APP 单元测试 14 / 14 通过：新增 `PasswordGeneratorTest` 12 项（0.176 
 
 中英 README、规格、路线、决策与主页能力文案已同步；主页只改文本，JavaScript 语法检查通过，没有重新发布或线上视觉验收。本轮不重做云备份 / D2D、全平台录屏 / TalkBack、完整内存 / 日志扫描或正式密码学审查，仍不是完整首版验收或正式安装版发布。
 
+## 主密码最小长度调整
+
+日期：2026-10-04。按用户明确要求，将主密码最小长度从 16 降为 8 个 Unicode code points，保留 128 上限、Unicode 有效性与原值保真。同步核心凭据校验、建库表单校验和提示；已有库口令、格式和加密参数不变。
+
+新增核心边界测试在修改生产代码前确实失败于 8 字符建库，原始 XML 留在 `output/verification/master-password-boundary-before.xml`。修改后核心 13 / 13 通过（37.829 秒），含 8 位 ASCII、包含补充平面字符 / 首尾空格的 8 code points、128 上限的创建 / 保存 / 重开；拒绝边界按新需求由 15 调整为 7，另覆盖 7 个 emoji、129 字符及非法 surrogate。原有长主密码、错误认证、原值保真与存储故障回归保留并通过。
+
+APP 14 / 14 单元测试通过。默认构建脚本完成 Debug / Release / androidTest、debug lint 和核心 / APP 测试（2 分 13 秒）；两种最终 Manifest 检查与文档检查通过。专用 AVD `local_password_manager_ui_regression` / `5582` 定向运行 `S1UiTest#masterPasswordMinimumAllowsEightCharacters`，1 / 1 通过（28.843 秒）：7 字符显示正确提示且未建库，同一表单改 8 字符可建库、保存记录，锁定后用同一 8 字符主密码解锁并读到原值。记录位于 `output/verification/master-password-minimum-ui.txt`；其余设备场景沿用前述基线，本轮未重跑整套设备验收。
+
+本轮 Debug SHA-256：`5CFDF822A38EE09B7AD9F9DA7F5C8A5C5BE688DEB3F9A409E2D2B42DF6830259`；Release unsigned：`0DCD586DE41DB70E1D1EF37DC3EFE241C7D3E1DD6C87492AEB05A6838E45FB75`。改动仅本地提交，未推送或发布。
+
 ## 验收映射与限制
 
 | 场景 | 当前覆盖 | 未完成的完整场景 |

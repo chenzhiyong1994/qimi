@@ -120,7 +120,7 @@ class VaultRepository(
         private fun digest(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes)
         private fun credentials(password: CharArray): Credentials {
             val value = String(password)
-            if (value.codePointCount(0, value.length) !in 16..128 || !value.isValidUnicode()) {
+            if (value.codePointCount(0, value.length) !in 8..128 || !value.isValidUnicode()) {
                 throw VaultException(VaultFailure.INVALID_INPUT)
             }
             return Credentials.from(EncryptedValue.fromString(value))

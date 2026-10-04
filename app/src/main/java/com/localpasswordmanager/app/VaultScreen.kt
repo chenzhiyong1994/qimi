@@ -144,7 +144,7 @@ private fun AuthForm(state: VaultUi, vault: VaultViewModel) {
 
     Panel {
         Text(if (state.exists) "解锁密码库" else "创建你的密码库", style = MaterialTheme.typography.titleLarge)
-        Text(if (state.exists) "输入主密码，继续使用你的账号。" else "设置 16–128 个字符的长口令，空格和换行会保留。",
+        Text(if (state.exists) "输入主密码，继续使用你的账号。" else "设置 8–128 个字符的主密码，空格和换行会保留。",
             style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Field(password, { password = it }, "主密码", "master_password", secret = true, revealed = visible,
             enabled = !state.busy, leading = VaultIconKind.Key, onReveal = { visible = !visible },

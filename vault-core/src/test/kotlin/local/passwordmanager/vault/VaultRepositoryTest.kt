@@ -23,6 +23,18 @@ class VaultRepositoryTest {
     private fun repository() = VaultRepository(temporary.root.resolve("vault.kdbx"))
     private fun entry(title: String = "Synthetic Entry") = EntryInput(title, "SyntheticUser", "SyntheticPassword!42")
 
+    @Test fun masterPasswordLengthBoundariesCreateAndUnlockWithoutChangingOriginalValues() {
+        // 合成口令：最短 ASCII、含空格/补充平面字符的 8 code points，以及保留的 128 上限。
+        listOf("Synt8!ab", " 😀合成8!a ", "A".repeat(128)).forEachIndexed { index, value ->
+            val repository = VaultRepository(temporary.newFolder("master-boundary-$index").resolve("vault.kdbx"))
+            val password = value.toCharArray()
+            try {
+                val saved = repository.create(password).use { it.saveEntry(entry()) }
+                repository.unlock(password).use { assertEquals(listOf(saved), it.listEntries()) }
+            } finally { password.fill('\u0000') }
+        }
+    }
+
     companion object {
         // 公开合成测试字段，不是真实账号或凭据；边界长度和非法 Unicode 用于原值校验。
         private const val EDITED_ENTRY_FIXTURE = "Changed Synthetic Password!42"
@@ -233,7 +245,7 @@ class VaultRepositoryTest {
             }
         }
         val other = VaultRepository(temporary.newFolder("invalid-master").resolve("vault.kdbx"))
-        listOf("A".repeat(15), "A".repeat(129), "A".repeat(16) + "\uD800").forEach { password ->
+        listOf("A".repeat(7), "😀".repeat(7), "A".repeat(129), "A".repeat(8) + "\uD800").forEach { password ->
             assertEquals(VaultFailure.INVALID_INPUT, assertFailsWith<VaultException> { other.create(password.toCharArray()) }.reason)
             assertFalse(other.exists())
         }

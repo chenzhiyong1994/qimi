@@ -15,7 +15,7 @@ Kotpass 0.13.0 的 [`ContentBlocks`](https://github.com/keemobile/kotpass/blob/0
 
 ## 调用契约
 
-`VaultRepository(File)` 提供 `exists()`、`create(CharArray)` 与 `unlock(CharArray)`；数组仍由调用方持有，调用返回后应尽快覆盖。主密码长度 16–128，五个输入上限依次为 100/256/1024/2048/10000，均按 Unicode code point 计数；空标题与空密码拒绝。未配对 UTF-16 surrogate 明确拒绝，其他原值不裁剪、不规范化、不截断。
+`VaultRepository(File)` 提供 `exists()`、`create(CharArray)` 与 `unlock(CharArray)`；数组仍由调用方持有，调用返回后应尽快覆盖。主密码长度 8–128，五个输入上限依次为 100/256/1024/2048/10000，均按 Unicode code point 计数；空标题与空密码拒绝。未配对 UTF-16 surrogate 明确拒绝，其他原值不裁剪、不规范化、不截断。
 
 `VaultSession` 提供 `listEntries(query)`、`getEntry(id)`、`saveEntry(EntryInput, id?, expectedVersion?)`、`close()`。搜索仅在会话内，按 NFC 和忽略大小写的派生值检索标题、账号与 URL host，不检索密码、备注或 URL 路径/查询；派生值不写回。重复名称/账号创建独立 ID；更新须提供基准版本，密码更新的原内容与最近 5 份历史在同一提交中保存。历史没有公开读取或恢复接口，本阶段 UI 不提供编辑。
 

@@ -63,8 +63,8 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
             ui = ui.copy(error = "两次输入的主密码不一致")
             return
         }
-        if (creating && password.codePointCount(0, password.length) !in 16..128) {
-            ui = ui.copy(error = "请设置 16–128 个字符的主密码，空格也会保留")
+        if (creating && password.codePointCount(0, password.length) !in 8..128) {
+            ui = ui.copy(error = "请设置 8–128 个字符的主密码，空格也会保留")
             return
         }
         if (password.isEmpty()) {
