@@ -196,6 +196,18 @@ APP 14 / 14 单元测试通过。默认构建脚本完成 Debug / Release / andr
 
 中英 README、体验 / 产品 / 验收 / 路线 / 决策、开发入口、核心契约说明和主页能力文案已同步。主页旧截图明确标为此前版本，JavaScript 语法检查通过，未重新发布或做线上视觉验收。编辑存储故障和版本冲突沿用核心测试证据，本轮新增 UI 测试不宣称注入覆盖这两类故障；云备份、D2D、真机与完整安全验收仍不在本次覆盖范围内。
 
+## 1.0.0 正式签名制品验证
+
+日期：2026-10-04。最终 APK 来源提交为 `23a297b00c83aa9bc57afc503f7b98fcc4a72931`，应用标识 `com.localpasswordmanager.app`，版本 `1.0.0` / code `2`，minSdk `29` / targetSdk `36`。签名、对齐、包标识与版本、无 `INTERNET` 及非 debuggable 检查通过；原生打包证据在 `output/verification/release-1.0.0-final-package.txt`。最终文件 `qimi-1.0.0.apk` 为 21,346,126 bytes，APK SHA-256 与公开证书摘要见[发行说明](releases/1.0.0.md)。后续发布记录的文档提交不改变该 APK 来源或 `v1.0.0` 标签。
+
+最终签名包在专用 Android 16 `local_password_manager_ui_regression` / `emulator-5582` 完成基础流程检查：覆盖安装保持现有合成库，解锁、新增记录、编辑、保存完成后读取新值，强制停止再重开解锁后读回一致；列表不暴露账号或密码原值，Release 没有快捷解锁入口。最终证据在 `output/verification/release-1.0.0-device-verified.txt`。用户预览 `emulator-5580` 的数据未操作；专用 AVD 验证结束后关闭，合成数据保留。
+
+此前原生探针存在 UI 可见性与等待保存完成的失败，保留 `release-1.0.0-device.txt`、`release-1.0.0-device-final.txt`、`release-1.0.0-device-checked.txt` 等原始记录。最终探针在详情页显示按钮可用且新值读回后才认定保存完成，再执行强制停止；没有修改生产代码、原断言或超时。该签名包检查与此前 Debug instrumentation 分开记录，不将其扩大为全部设备、安全或恢复验收。
+
+[GitHub v1.0.0](https://github.com/chenzhiyong1994/qimi/releases/tag/v1.0.0) 于 2026-10-04 19:28:51（Asia/Shanghai）正式发布，Release ID `402985598`，`draft=false`、`prerelease=false`，为 Latest；发布时 main 与轻量标签 `v1.0.0` 均回读到上述来源提交。3 个附件为 APK、`SHA256SUMS.txt`、`certificate.txt`，服务端 digest / size 与本机一致。草稿阶段 `gh download` 停滞于 0 bytes，已停止本轮下载进程；先按服务端 SHA 校验并发布后，匿名 HTTP 完整下载公开 APK 成功，随后两份公开附属文件也下载回读，全部 SHA-256 与本机一致。证据在 `output/verification/release-1.0.0-server-asset-check.json`、`release-1.0.0-public-download.txt` 与 `release-1.0.0-public-sidecars.json`。最终标签、Latest 元数据和附件名称 / digest 复核稳定。
+
+源码审计与 Pages 实际部署结果另见[开源记录](open-source.md)。完整安全评审、备份恢复、云备份 / D2D 排除及真机支持仍未完成；正式签名与公开下载不替代这些验收。
+
 ## 验收映射与限制
 
 | 场景 | 当前覆盖 | 未完成的完整场景 |
