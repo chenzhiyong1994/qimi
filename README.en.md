@@ -15,9 +15,9 @@ This is an **S1 development build**. The source is available for learning, revie
 ## Current capabilities
 
 - Create a local encrypted vault and unlock it with a master password.
-- Save a name, username, password, website, and notes while preserving the original username and password values.
-- Generate passwords when adding an entry: Simple, Normal (default), or Complex presets, with optional advanced complexity, 8–128 character length, and character types. A candidate fills the form only after you choose to use it.
-- Search entries, inspect details, and reveal or copy passwords when needed.
+- Add entries or edit their name, username, password, website, and notes from the details page, preserving original values. Changes update the existing entry only when saved.
+- Generate passwords when adding or editing an entry: Simple, Normal (default), or Complex presets, with optional advanced complexity, 8–128 character length, and character types. A candidate fills the form only after you choose to use it.
+- Search entries in a list showing only names and a fixed password mask; open details to check the username and reveal or copy passwords when needed.
 - Lock manually or when the app enters the background; automatically hide revealed passwords and clear the sensitive clipboard.
 - A forest-green / warm-white interface, a dark theme, and native Compose interactions; a distinct brand mark and an adaptive app icon.
 
@@ -28,12 +28,12 @@ The vault uses KDBX 4.1. Saving includes candidate-file verification, an atomic 
 | Increment | Planned work |
 | --- | --- |
 | S2 | Offline encrypted backups, readability verification, recovery, and preservation of data on failure |
-| S3 | Organizing scattered information, other sign-in methods, encrypted drafts, and editing |
+| S3 | Organizing scattered information, other sign-in methods, encrypted drafts, and resuming interrupted work |
 | S4 | Tags and favorites, generated-password draft/copy integration, history, and a recycle bin |
 | S5 | Biometric unlock and system autofill for trusted targets |
 | S6 | A complete MVP, compatibility and security acceptance, and release preparation |
 
-The capabilities in this table are not implemented yet. Basic password generation was brought forward into the S1 new-entry form at the user's request; editing, drafts, and copying within the generator are not included. S2 remains the next priority. See the [Iteration roadmap](docs/iteration-roadmap.md) for dependencies and acceptance boundaries.
+The capabilities in this table are not implemented yet. Basic editing and password generation were brought forward into S1 at the user's request. Editing has no drafts: backgrounding or locking discards unsaved input, and copying within the generator is not included. S2 remains the next priority. See the [Iteration roadmap](docs/iteration-roadmap.md) for dependencies and acceptance boundaries.
 
 ## Build and validation
 

@@ -56,14 +56,18 @@ adb -s emulator-5580 shell am instrument -w -r -e dedicatedSyntheticDevice true 
 pwsh -NoProfile -File scripts/android.ps1 -Task :app:assembleDebugAndroidTest
 adb -s emulator-5582 install -r app/build/outputs/apk/debug/app-debug.apk
 adb -s emulator-5582 install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true -e class com.localpasswordmanager.app.S1UiTest,com.localpasswordmanager.app.PasswordGeneratorUiTest com.localpasswordmanager.app.dev.test/androidx.test.runner.AndroidJUnitRunner
+adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true -e class com.localpasswordmanager.app.S1UiTest,com.localpasswordmanager.app.PasswordGeneratorUiTest,com.localpasswordmanager.app.EntryEditingUiTest com.localpasswordmanager.app.dev.test/androidx.test.runner.AndroidJUnitRunner
 pwsh -NoProfile -File scripts/check-process-restart.ps1 -DeviceSerial emulator-5582 -DedicatedSyntheticDevice
 pwsh -NoProfile -File scripts/check-synthetic-data.ps1 -DeviceSerial emulator-5582 -DedicatedSyntheticDevice
 ```
 
 序列号仅是本轮示例，先用 `adb devices -l` 核对。本轮 UI 回归使用独立 AVD `local_password_manager_ui_regression`（`emulator-5582`）；用户现有 `emulator-5580` 保留数据，不运行重建夹具的套件。测试清理范围限目标 debug APP 的 `noBackupFilesDir/vault`，没有卸载 APP 或清理其他应用；新的专用 AVD 和旧 AVD 各自保留。
 
-普通设备套件选择 `S1UiTest` 与 `PasswordGeneratorUiTest`，Gradle 的默认类筛选同时包含两者，仍排除需要既有夹具的只读探针。可单独选择生成器类，验证默认 / 高级规则、取消与保存、锁定和重建；它同样重建专用合成库。普通与大字体深色面板的合成截图通过安全窗口内 View 软件绘制，保存在 APP 的 `cache/password-generator-ui/`。独立进程检查先建立合成夹具，再 `force-stop` 且确认旧进程退出，最后单独运行不写库的 `ProcessRestartProbe`；缺少夹具或读取失败会失败，不跳过。
+普通设备套件选择 `S1UiTest`、`PasswordGeneratorUiTest` 与 `EntryEditingUiTest`，Gradle 的默认类筛选包含这三类，仍排除需要既有夹具的只读探针。可单独选择生成器类，验证默认 / 高级规则、取消与保存、锁定和重建；编辑类覆盖五字段原值预填与同 ID 持久化、取消及校验、编辑时使用生成器、后台丢弃未保存变化与列表精简。这些类均重建专用合成库，具体结果以[验证记录](validation-s1.md)为准。
+
+普通与大字体深色生成器面板的合成截图通过安全窗口内 View 软件绘制，保存在 APP 的 `cache/password-generator-ui/`。独立进程检查先建立合成夹具，再 `force-stop` 且确认旧进程退出，最后单独运行不写库的 `ProcessRestartProbe`；缺少夹具或读取失败会失败，不跳过。
+
+编辑专项同样仅在核验既定合成夹具后绘制列表 / 详情 / 编辑页面，保持 `FLAG_SECURE`，截图位于 APP 的 `cache/entry-editing-ui/`；普通及大字体深色的实际验证结果见验证记录。
 
 多台设备连接时优先使用上述显式 `adb -s` 定向安装和运行，避免未经核验的 Gradle 设备筛选触及保留数据的模拟器。S1 解锁测试在物理触摸前核验按钮完整可见和键盘 / 窗口布局稳定，不关闭动画或以语义回调替代触摸；原认证 120 秒超时与安全断言保持。
 
@@ -73,7 +77,7 @@ pwsh -NoProfile -File scripts/check-synthetic-data.ps1 -DeviceSerial emulator-55
 
 品牌矢量、透明 PNG 和导出方式见[品牌资产](../assets/brand/README.md)。Header 的 `brand_mark.xml` 与 Launcher 的 `icon_foreground.xml` 共享图形路径；API 33+ 的 adaptive icon 额外引用同一前景作为 `monochrome`。APP 仅加载本地矢量资源，不读取生成探索素材。
 
-[VaultScreen.kt](../app/src/main/java/com/localpasswordmanager/app/VaultScreen.kt)承载建库 / 解锁、列表、新增、详情和帮助页面；[VaultTheme.kt](../app/src/main/java/com/localpasswordmanager/app/ui/VaultTheme.kt)统一森林绿、暖白、深色配色、系统字体和圆角；[VaultIcons.kt](../app/src/main/java/com/localpasswordmanager/app/ui/VaultIcons.kt)在本机绘制线框图标。沿用现有 Compose / Material 3，无新增依赖或网络素材。
+[VaultScreen.kt](../app/src/main/java/com/localpasswordmanager/app/VaultScreen.kt)承载建库 / 解锁、列表、新增 / 编辑、详情和帮助页面；[VaultTheme.kt](../app/src/main/java/com/localpasswordmanager/app/ui/VaultTheme.kt)统一森林绿、暖白、深色配色、系统字体和圆角；[VaultIcons.kt](../app/src/main/java/com/localpasswordmanager/app/ui/VaultIcons.kt)在本机绘制线框图标。沿用现有 Compose / Material 3，无新增依赖或网络素材。
 
 搜索一键清空、授权代次内的列表滚动记忆、新增更多信息的尺寸动效、主密码 IME Done 提交、错误滚动顶部与复制成功约 2.5 秒的按钮反馈已接入。密码约 10 秒隐藏、复制原值、读写核验和后台锁定继续使用原有判断；动效不保留锁定前页面或秘密。完整体验预期与当前覆盖分别见[体验规格](experience-spec.md)。
 
@@ -83,11 +87,13 @@ pwsh -NoProfile -File scripts/check-synthetic-data.ps1 -DeviceSerial emulator-55
 adb -s emulator-5582 shell am instrument -w -r -e dedicatedSyntheticDevice true -e class com.localpasswordmanager.app.UiPolishProbe com.localpasswordmanager.app.dev.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
-本轮 2 / 2 通过，分别检查普通界面与 `font_scale=1.5` / 系统深色；字体与夜间模式原值在 `finally` 恢复。10 张 PNG 由本应用 View 树软件绘制，仅允许已知合成资料，始终保留 `FLAG_SECURE`，不使用系统屏幕截图接口。设备输出为 APP 的 `cache/ui-polish/`，本轮本机证据在 `output/verification/ui-polish-images/ui-polish/`。此探针验证 UI 可达性与只读流程，不代表完整 S1 回归或安全验收全部通过。
+2026-10-01 的记录为 2 / 2 通过，分别检查当时普通界面与 `font_scale=1.5` / 系统深色；字体与夜间模式原值在 `finally` 恢复。10 张 PNG 由本应用 View 树软件绘制，仅允许已知合成资料，始终保留 `FLAG_SECURE`，不使用系统屏幕截图接口。设备输出为 APP 的 `cache/ui-polish/`，该次本机证据在 `output/verification/ui-polish-images/ui-polish/`。此历史结果不替代本轮编辑与列表调整的验证，也不代表完整 S1 回归或安全验收全部通过。
 
 ## S1 的实现边界
 
-已接入创建主密码确认、新增账号密码记录、搜索、详情显示与复制，以及新增表单的密码生成底部面板。生成器采用 `java.security.SecureRandom`，无需新依赖；预设与高级规则、空值回退、长度边界见 UX-12，抽样及候选生命周期见 SEC-23。此增量没有编辑、非密码登录方式、草稿、生成器内复制、随机口令、标签、待整理、恢复、生物识别或自动填充入口。表单未保存时返回须明确丢弃；后台或锁定丢弃候选及未保存输入，界面不承诺恢复。后续仍按[迭代路线](iteration-roadmap.md)推进。
+已接入创建主密码确认、新增 / 编辑账号密码记录、搜索、详情显示与复制，以及共享表单的密码生成底部面板。编辑从详情进入，原值预填五字段，保存向 `saveEntry` 传入原 ID 与编辑基准版本；失败保留输入，无修改返回原详情，有修改返回须明确丢弃。列表仅名称与固定 8 圆点密码遮罩；解锁与列表移除开发页脚，新增与详情移除“账号密码”标记，详情移除常驻剪贴板说明，真实限制保留在帮助页。
+
+生成器采用 `java.security.SecureRandom`，无需新依赖；预设与高级规则、空值回退、长度边界见 UX-12，抽样及候选生命周期见 SEC-23。当前没有非密码登录方式、草稿、生成器内复制、随机口令、标签、待整理、恢复、生物识别或自动填充入口。后台或锁定丢弃候选及未保存输入，界面不承诺恢复；已开始的保存仍按原存储契约提交或回退。后续仍按[迭代路线](iteration-roadmap.md)推进。
 
 主密码与字段按 Unicode code point 计数：主密码 8–128；名称 100、账号 256、密码 1024、网址 2048、备注 10000。账号、密码与主密码原值保留；未配对 UTF-16 surrogate 拒绝，不替换。搜索仅用名称、账号与网址 host 的 NFC / 大小写派生值，不覆盖密码、备注或 URL path / query，不写磁盘索引。
 

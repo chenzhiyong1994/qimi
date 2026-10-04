@@ -19,7 +19,7 @@ import local.passwordmanager.vault.VaultSession
 import local.passwordmanager.vault.VaultException
 import local.passwordmanager.vault.VaultFailure
 
-enum class Page { AUTH, LIST, ADD, DETAIL, HELP }
+enum class Page { AUTH, LIST, ADD, EDIT, DETAIL, HELP }
 
 data class VaultUi(
     val page: Page = Page.AUTH,
@@ -108,17 +108,35 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun add() {
-        if (session != null && !ui.busy) ui = ui.copy(page = Page.ADD, error = null, message = null)
+        if (session != null && !ui.busy) ui = ui.copy(page = Page.ADD, selected = null, error = null, message = null)
     }
 
     fun detail(id: String) {
         val active = session ?: return
+        if (ui.busy) return
         ui = ui.copy(page = Page.DETAIL, selected = active.getEntry(id), error = null, message = null)
+    }
+
+    fun edit() {
+        if (session == null || ui.busy || ui.page != Page.DETAIL || ui.selected == null) return
+        touch()
+        ui = ui.copy(page = Page.EDIT, error = null, message = null)
+    }
+
+    fun cancelEdit() {
+        if (session == null || ui.busy || ui.page != Page.EDIT || ui.selected == null) return
+        ui = ui.copy(page = Page.DETAIL, error = null, message = null)
     }
 
     fun save(input: EntryInput) {
         val active = session ?: return
-        if (ui.busy || ui.page != Page.ADD) return
+        if (ui.busy || ui.page !in setOf(Page.ADD, Page.EDIT)) return
+        // Freeze the identity/version before launching IO; an edit must never fall back to insertion.
+        val original = if (ui.page == Page.EDIT) ui.selected ?: return else null
+        if (original != null && input == EntryInput(original.title, original.username, original.password, original.url, original.notes)) {
+            cancelEdit()
+            return
+        }
         val fields = listOf(input.title to 100, input.username to 256, input.password to 1024,
             input.url to 2048, input.notes to 10000)
         if (input.title.isEmpty() || input.password.isEmpty()) {
@@ -132,7 +150,9 @@ class VaultViewModel(application: Application) : AndroidViewModel(application) {
         val epoch = ui.epoch
         ui = ui.copy(busy = true, error = null, message = null)
         viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) { runCatching { active.saveEntry(input) } }
+            val result = withContext(Dispatchers.IO) {
+                runCatching { active.saveEntry(input, original?.id, original?.version) }
+            }
             if (ui.epoch != epoch) return@launch
             result.fold(onSuccess = {
                 ui = ui.copy(page = Page.DETAIL, busy = false, selected = it,

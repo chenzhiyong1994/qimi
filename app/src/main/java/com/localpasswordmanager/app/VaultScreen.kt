@@ -37,8 +37,6 @@ import com.localpasswordmanager.app.ui.VaultIcon
 import com.localpasswordmanager.app.ui.VaultIconKind
 import kotlinx.coroutines.delay
 import local.passwordmanager.vault.EntryInput
-import local.passwordmanager.vault.VaultEntry
-import java.net.URI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,6 +95,7 @@ internal fun VaultScreen(vault: VaultViewModel, clipboard: SensitiveClipboard, o
                         Page.AUTH -> AuthForm(state, vault)
                         Page.LIST -> VaultList(state, vault)
                         Page.ADD -> EntryForm(state, vault)
+                        Page.EDIT -> key(state.selected?.id, state.selected?.version) { EntryForm(state, vault) }
                         Page.DETAIL -> EntryDetail(state, vault, clipboard)
                         Page.HELP -> Help(vault)
                     }
@@ -177,7 +176,6 @@ private fun AuthForm(state: VaultUi, vault: VaultViewModel) {
         Spacer(Modifier.width(8.dp))
         Text("主密码与本地存储帮助")
     }
-    DevelopmentNotice()
 }
 
 @Composable
@@ -215,10 +213,9 @@ private fun VaultList(state: VaultUi, vault: VaultViewModel) {
                 AccountAvatar(entry.title)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(entry.title, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                    Text(maskUsername(entry.username), style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(displayHost(entry.url) ?: "账号密码", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text("••••••••", style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.clearAndSetSemantics { contentDescription = "密码已隐藏" })
                 }
                 VaultIcon(VaultIconKind.ChevronRight, null, Modifier.size(18.dp))
             }
@@ -229,31 +226,35 @@ private fun VaultList(state: VaultUi, vault: VaultViewModel) {
         Spacer(Modifier.width(8.dp))
         Text("使用与存储说明")
     }
-    DevelopmentNotice()
 }
 
 @Composable
 private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
-    var title by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var url by remember { mutableStateOf("") }
-    var notes by remember { mutableStateOf("") }
-    var more by remember { mutableStateOf(false) }
+    val editing = state.page == Page.EDIT
+    val original = if (editing) state.selected ?: return else null
+    val initial = remember {
+        EntryInput(original?.title.orEmpty(), original?.username.orEmpty(), original?.password.orEmpty(),
+            original?.url.orEmpty(), original?.notes.orEmpty())
+    }
+    var title by remember { mutableStateOf(initial.title) }
+    var username by remember { mutableStateOf(initial.username) }
+    var password by remember { mutableStateOf(initial.password) }
+    var url by remember { mutableStateOf(initial.url) }
+    var notes by remember { mutableStateOf(initial.notes) }
+    var more by remember { mutableStateOf(initial.url.isNotEmpty() || initial.notes.isNotEmpty()) }
     var discard by remember { mutableStateOf(false) }
     var visible by remember { mutableStateOf(false) }
     var generatorOpen by remember { mutableStateOf(false) }
+    val changed = EntryInput(title, username, password, url, notes) != initial
     val focus = LocalFocusManager.current
     LaunchedEffect(visible) { if (visible) { delay(10_000); visible = false } }
+    fun leave() { if (editing) vault.cancelEdit() else vault.list() }
     fun back() {
         if (state.busy) return
-        if (listOf(title, username, password, url, notes).any { it.isNotEmpty() }) discard = true else vault.list()
+        if (changed) discard = true else leave()
     }
     BackHandler { back() }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("新增账号", style = MaterialTheme.typography.headlineMedium)
-        Pill("账号密码", VaultIconKind.Key)
-    }
+    Text(if (editing) "编辑账号" else "新增账号", style = MaterialTheme.typography.headlineMedium)
     Panel {
         Text("登录信息", style = MaterialTheme.typography.titleMedium)
         Field(title, { vault.touch(); title = it }, "名称（必填）", "entry_title", enabled = !state.busy,
@@ -290,21 +291,25 @@ private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
         }
     }
     QuietNote("尚未保存。退出或锁定会丢弃输入，当前开发版没有草稿恢复。", VaultIconKind.Info)
-    PrimaryAction(if (state.busy) "正在保存…" else "保存账号", VaultIconKind.Check, "save_entry", enabled = !state.busy, loading = state.busy) {
+    PrimaryAction(if (state.busy) "正在保存…" else if (editing) "保存修改" else "保存账号",
+        VaultIconKind.Check, "save_entry", enabled = !state.busy && (!editing || changed), loading = state.busy) {
         focus.clearFocus()
         vault.save(EntryInput(title, username, password, url, notes))
     }
-    TextButton(onClick = { back() }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().testTag("back")) { Text("返回密码库") }
+    TextButton(onClick = { back() }, enabled = !state.busy, modifier = Modifier.fillMaxWidth().testTag("back")) {
+        Text(if (editing) "返回详情" else "返回密码库")
+    }
     if (discard) AlertDialog(onDismissRequest = { discard = false }, title = { Text("这些输入尚未保存") },
         text = { Text("丢弃后无法恢复。继续编辑并保存，或明确丢弃。") },
-        confirmButton = { TextButton(onClick = { discard = false; vault.list() }) { Text("丢弃输入") } },
+        confirmButton = { TextButton(onClick = { discard = false; leave() }) { Text("丢弃输入") } },
         dismissButton = { TextButton(onClick = { discard = false }) { Text("继续编辑") } })
     if (generatorOpen) PasswordGeneratorSheet(
         onInteraction = vault::touch,
         onDismiss = { generatorOpen = false },
         onUse = { candidate ->
             val active = vault.ui
-            if (active.epoch == state.epoch && active.page == Page.ADD && !active.busy) {
+            if (active.epoch == state.epoch && active.page == state.page && !active.busy &&
+                active.selected?.id == original?.id && active.selected?.version == original?.version) {
                 password = candidate
                 visible = false
             }
@@ -334,8 +339,12 @@ private fun EntryDetail(state: VaultUi, vault: VaultViewModel, clipboard: Sensit
         AccountAvatar(entry.title, large = true)
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(7.dp)) {
             Text(entry.title, style = MaterialTheme.typography.headlineSmall)
-            Pill("账号密码", VaultIconKind.Key)
         }
+    }
+    OutlinedButton(onClick = vault::edit, modifier = Modifier.fillMaxWidth().testTag("edit_entry")) {
+        VaultIcon(VaultIconKind.Note, null, Modifier.size(18.dp))
+        Spacer(Modifier.width(8.dp))
+        Text("编辑账号")
     }
     Panel {
         SectionLabel("账号", VaultIconKind.User)
@@ -398,7 +407,6 @@ private fun EntryDetail(state: VaultUi, vault: VaultViewModel, clipboard: Sensit
             Text(entry.notes, style = MaterialTheme.typography.bodyMedium)
         }
     }
-    QuietNote("请核对目标应用或网站后再粘贴。剪贴板清理受系统与接收方限制。", VaultIconKind.Shield)
     TextButton(onClick = vault::list, modifier = Modifier.fillMaxWidth().testTag("back")) { Text("返回密码库") }
 }
 
@@ -409,7 +417,7 @@ private fun Help(vault: VaultViewModel) {
     HelpCard("主密码与手机锁屏密码独立", VaultIconKind.Key,
         "没有客服重置、万能恢复码或解密后门。错误密码不会自动销毁文件；请妥善记住主密码。")
     HelpCard("你的资料，加密保存在本机", VaultIconKind.Shield,
-        "密码库使用 KDBX 格式。当前支持建库、新增、搜索与手动取用；备份恢复、生物识别、自动填充和编辑仍待后续增量。")
+        "密码库使用 KDBX 格式。当前支持建库、新增与编辑、密码生成、搜索与手动取用；备份恢复、生物识别和自动填充仍待后续增量。")
     HelpCard("离开时，密码库会锁定", VaultIconKind.Lock,
         "后台、锁屏、主动锁定或前台闲置约 5 分钟后需重新解锁。已开始的保存会完成提交或回退；未保存输入没有恢复保证。")
     HelpCard("复制后，请留意剪贴板", VaultIconKind.Copy,
@@ -481,17 +489,6 @@ private fun SectionLabel(label: String, icon: VaultIconKind) {
 }
 
 @Composable
-private fun Pill(label: String, icon: VaultIconKind) {
-    Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer) {
-        Row(Modifier.padding(horizontal = 10.dp, vertical = 5.dp), verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-            VaultIcon(icon, null, Modifier.size(13.dp), MaterialTheme.colorScheme.onPrimaryContainer)
-            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer)
-        }
-    }
-}
-
-@Composable
 private fun AccountAvatar(title: String, large: Boolean = false) {
     val palette = listOf(MaterialTheme.colorScheme.primaryContainer, MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.tertiaryContainer)
     val ink = listOf(MaterialTheme.colorScheme.onPrimaryContainer, MaterialTheme.colorScheme.onSecondaryContainer, MaterialTheme.colorScheme.onTertiaryContainer)
@@ -546,10 +543,3 @@ private fun DevelopmentNotice() {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f))
     QuietNote("内部开发版 · 仅使用合成资料。备份恢复尚未完成，请勿存入真实密码。", VaultIconKind.Info)
 }
-
-private fun maskUsername(value: String): String {
-    if (value.isEmpty()) return "未填写账号"
-    return String(Character.toChars(value.codePoints().findFirst().asInt)) + "••••"
-}
-
-private fun displayHost(value: String): String? = runCatching { URI(value).host }.getOrNull()?.takeIf { it.isNotEmpty() }
