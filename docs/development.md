@@ -1,11 +1,12 @@
 # Android 开发与重建
 
-当前工程交付路线中的 S1 建库、手动取用与基础密码生成增量，品牌使用[产品方案](product-plan.md)中的“栖密”。只使用合成资料；备份恢复与完整安全验收完成前，不用于保管真实密码。实际证据以[验证记录](validation-s1.md)为准。
+1.0.0 的工程范围为 S1 建库、记录编辑、手动取用与基础密码生成，品牌使用[产品方案](product-plan.md)中的“栖密”。正式版本号不扩大已实现或已验证范围；只使用合成资料，备份恢复与完整安全验收完成前不用于保管真实密码。实际证据以[验证记录](validation-s1.md)为准，发行范围见[1.0.0 说明](releases/1.0.0.md)。
 
 ## 工程与版本
 
 | 对象 | 固定配置 | 用途 |
 | --- | --- | --- |
+| APP 版本 | versionName `1.0.0`、versionCode `2` | GitHub 目标标签 `v1.0.0`；实际发布状态由项目状态记录 |
 | Gradle Wrapper | 8.14.5，官方分发 SHA-256 | 独立重建入口，不依赖另一项目的 wrapper |
 | JDK | 17 | Gradle、Kotlin/JVM 与 Android 编译 |
 | Android Gradle Plugin | 8.11.1 | 支持编译 API 36 |
@@ -31,8 +32,16 @@ pwsh -NoProfile -File scripts/check-docs.ps1
 默认运行核心 JVM 测试、APP 单元测试、Android lint、debug / release 构建和 instrumentation 测试包编译。只运行一个任务时可传 `-Task :vault-core:test`；缓存齐备后加 `-Offline`。不要以更新 lockfile / 校验元数据来掩盖未知制品变化；有意更新依赖时核对官方来源、版本、兼容与回归证据。
 
 - 开发 APK：`app/build/outputs/apk/debug/app-debug.apk`，安装标识 `com.localpasswordmanager.app.dev`。
-- Release 构建输出 `app/build/outputs/apk/release/app-release-unsigned.apk`，尚无正式签名或分发配置。
+- 默认 Release 构建输出 `app/build/outputs/apk/release/app-release-unsigned.apk`；签名打包独立执行，分发文件名为 `qimi-1.0.0.apk`，正式安装标识 `com.localpasswordmanager.app`。
 - 设备测试报告在 `app/build/reports/androidTests/connected/debug/`；核心报告在 `vault-core/build/reports/tests/test/`；这些都是可再生输出。
+
+## 正式签名打包
+
+签名打包入口为 [scripts/package-release.ps1](../scripts/package-release.ps1)，参数包括 `JavaHome`、`AndroidSdk`、`Keystore`、`KeyAlias` 与 `PasswordEnvironmentVariable`。最后一个参数只传含密码的环境变量名称，默认 `QIMI_SIGNING_PASSWORD`；不能把密码本身放入命令行、日志或源码。[.env.example](../.env.example)只说明变量，不会自动加载。签名库与其他签名资料保存在仓库外；默认构建不要求签名资料，也不自动分发 APK。
+
+从安全存储临时注入口令后运行签名脚本。它先完成核心 / APP 测试、Release lint 与构建，再从 APK 元数据读取版本，使用现有 Build Tools 的 `zipalign` / `apksigner` 签名并复验。通过后输出 `output/releases/<版本>/qimi-<版本>.apk`、`SHA256SUMS.txt` 和仅含公开证书摘要的 `certificate.txt`；同版本目录已存在时拒绝覆盖。默认 Build Tools 为 `35.0.0`，可通过 `BuildToolsVersion` 显式选择已有版本，离线使用 `-Offline`。完成后清除口令环境变量，并长期安全保留签名身份与可恢复口令。
+
+分发前核对最终 APK 的版本、安装标识、权限、签名证书及 SHA-256，并验证安装；打包成功、GitHub 附件上传成功与设备验证分别记录。正式包与 `.dev` 开发包是两个应用，不会自动迁入开发包密码库。今后覆盖更新须保持正式安装标识和签名身份；不要通过卸载或清数据处理安装问题。
 
 ## 模拟器快捷解锁
 

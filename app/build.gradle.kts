@@ -11,8 +11,8 @@ android {
         applicationId = "com.localpasswordmanager.app"
         minSdk = 29
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0-dev"
+        versionCode = 2
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["class"] =
             "com.localpasswordmanager.app.S1UiTest,com.localpasswordmanager.app.PasswordGeneratorUiTest,com.localpasswordmanager.app.EntryEditingUiTest"

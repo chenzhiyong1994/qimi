@@ -4,13 +4,15 @@
 
 [Project website](https://chenzhiyong1994.github.io/qimi/) · [GitHub](https://github.com/chenzhiyong1994/qimi) · [Report an issue](https://github.com/chenzhiyong1994/qimi/issues)
 
+[1.0.0 release](https://github.com/chenzhiyong1994/qimi/releases/tag/v1.0.0) · [Download Android APK](https://github.com/chenzhiyong1994/qimi/releases/download/v1.0.0/qimi-1.0.0.apk) · [Release notes and installation boundaries](docs/releases/1.0.0.md)
+
 **Passwords stay local. Everyday life feels lighter.**
 
 ![Qimi product banner: Passwords stay local. Everyday life feels lighter.](assets/promo/qimi-banner.png)
 
 Qimi is an open-source local password manager for Android. It protects account information with a master password and makes saving, finding, and manually using credentials more convenient. The app does not request the `INTERNET` permission and has no cloud accounts, cloud sync, network analytics, or remote icons.
 
-This is an **S1 development build**. The source is available for learning, review, and contributions. A full security review, backup and recovery, and practical verification of system cloud backup / device-transfer exclusions are still incomplete. Use synthetic data for testing only; do not store real passwords. Release builds are not yet officially signed, and no official APK is distributed. See [Project status](docs/project-status.md) and [Validation records](docs/validation-s1.md) for what is implemented, verified, and still pending.
+**1.0.0** provides a local vault, entry editing, password generation, and manual use, covering S1 and its increments. The release version does not imply a complete MVP or completed security acceptance: backup and recovery, drafts, biometrics, and autofill are not implemented, and full security review and practical verification of system cloud backup / device-transfer exclusions remain unfinished. Use synthetic data for testing only; do not store real passwords. See [Project status](docs/project-status.md) and [Validation records](docs/validation-s1.md) for implementation, validation, and actual publication status.
 
 ## Current capabilities
 
@@ -55,7 +57,7 @@ On Linux / macOS, configure the same JDK and SDK and run the Gradle Wrapper:
   --no-daemon --console=plain
 ```
 
-The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`; the unsigned release APK is written to `app/build/outputs/apk/release/app-release-unsigned.apk`. See the [Development guide](docs/development.md) for versions, dependency verification, rebuilding, and device tests. Device tests recreate synthetic fixtures and must run only on a dedicated emulator containing synthetic test data.
+The default build writes the debug APK to `app/build/outputs/apk/debug/app-debug.apk` and the unsigned release APK to `app/build/outputs/apk/release/app-release-unsigned.apk`. The distribution filename is `qimi-1.0.0.apk`; signing is a separate packaging step, with signing material kept outside the repository. See the [Development guide](docs/development.md) for versions, dependency verification, rebuilding, and device tests. Device tests recreate synthetic fixtures and must run only on a dedicated emulator containing synthetic test data.
 
 In debug builds, the unlock page on a standard Android Emulator offers a one-tap test-vault unlock button. It works only with an existing vault using the synthetic fixture passphrase. It follows normal authentication and does not create or overwrite a vault. Release builds contain neither the button nor the synthetic passphrase.
 

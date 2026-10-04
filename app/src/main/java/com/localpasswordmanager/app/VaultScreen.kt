@@ -290,7 +290,7 @@ private fun EntryForm(state: VaultUi, vault: VaultViewModel) {
             }
         }
     }
-    QuietNote("尚未保存。退出或锁定会丢弃输入，当前开发版没有草稿恢复。", VaultIconKind.Info)
+    QuietNote("尚未保存。退出或锁定会丢弃输入，当前不支持草稿恢复。", VaultIconKind.Info)
     PrimaryAction(if (state.busy) "正在保存…" else if (editing) "保存修改" else "保存账号",
         VaultIconKind.Check, "save_entry", enabled = !state.busy && (!editing || changed), loading = state.busy) {
         focus.clearFocus()
@@ -422,7 +422,7 @@ private fun Help(vault: VaultViewModel) {
         "后台、锁屏、主动锁定或前台闲置约 5 分钟后需重新解锁。已开始的保存会完成提交或回退；未保存输入没有恢复保证。")
     HelpCard("复制后，请留意剪贴板", VaultIconKind.Copy,
         "前台约 30 秒或锁定时，仅在仍能确认属于本次复制时尝试清除。系统限制、进程结束、输入法及其他应用副本无法由本应用保证清除。")
-    DevelopmentNotice()
+    StorageNotice()
     TextButton(onClick = vault::leaveHelp, modifier = Modifier.fillMaxWidth().testTag("back")) { Text("返回") }
 }
 
@@ -539,7 +539,7 @@ private fun Feedback(message: String, error: Boolean) {
 }
 
 @Composable
-private fun DevelopmentNotice() {
+private fun StorageNotice() {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f))
-    QuietNote("内部开发版 · 仅使用合成资料。备份恢复尚未完成，请勿存入真实密码。", VaultIconKind.Info)
+    QuietNote("备份恢复尚未提供。请妥善保管主密码；卸载应用或清除应用数据会丢失本机密码库。", VaultIconKind.Info)
 }

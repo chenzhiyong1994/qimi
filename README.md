@@ -4,13 +4,15 @@
 
 [项目主页](https://chenzhiyong1994.github.io/qimi/) · [GitHub](https://github.com/chenzhiyong1994/qimi) · [问题反馈](https://github.com/chenzhiyong1994/qimi/issues)
 
+[1.0.0 发行页](https://github.com/chenzhiyong1994/qimi/releases/tag/v1.0.0) · [下载 Android APK](https://github.com/chenzhiyong1994/qimi/releases/download/v1.0.0/qimi-1.0.0.apk) · [发行说明与安装边界](docs/releases/1.0.0.md)
+
 **密码留在本地，轻松留给日常。**
 
 ![栖密产品宣传：密码留在本地，轻松留给日常](assets/promo/qimi-banner.png)
 
 栖密是一款面向 Android 的开源本地密码管理应用，用主密码保护账号资料，让记录、查找和手动取用更顺手。应用不申请 `INTERNET` 权限，不接入云账户、云同步、联网埋点或远程图标。
 
-当前为 **S1 开发版本**，源码开放供学习、审阅与参与开发。尚未完成完整安全审查、备份恢复和系统云备份 / 设备迁移实测，请只使用合成资料测试，勿用于保管真实密码。Release 构建尚未正式签名，没有正式分发 APK；已实现、已验证和待完成的范围见[项目状态](docs/project-status.md)与[验证记录](docs/validation-s1.md)。
+**1.0.0** 提供本地建库、记录编辑、密码生成与手动取用，工程范围对应 S1 及其增量。正式版本号不表示完整 MVP 或安全验收完成：备份恢复、草稿、生物识别和自动填充尚未实现，完整安全审查与系统云备份 / 设备迁移实测尚未完成。请只使用合成资料测试，勿用于保管真实密码。实现、验证和实际发布状态见[项目状态](docs/project-status.md)与[验证记录](docs/validation-s1.md)。
 
 ## 当前能力
 
@@ -55,7 +57,7 @@ Linux / macOS，在配置好同样的 JDK 与 SDK 后运行 Gradle Wrapper：
   --no-daemon --console=plain
 ```
 
-Debug APK 输出至 `app/build/outputs/apk/debug/app-debug.apk`；未签名 Release 输出至 `app/build/outputs/apk/release/app-release-unsigned.apk`。版本、依赖校验、重建和设备测试步骤见[开发文档](docs/development.md)。设备测试会重建合成夹具，只可在专用合成测试模拟器上执行。
+默认构建的 Debug APK 输出至 `app/build/outputs/apk/debug/app-debug.apk`；未签名 Release 输出至 `app/build/outputs/apk/release/app-release-unsigned.apk`。分发文件名为 `qimi-1.0.0.apk`，签名打包单独执行，签名资料保存在仓库外。版本、依赖校验、重建和设备测试步骤见[开发文档](docs/development.md)。设备测试会重建合成夹具，只可在专用合成测试模拟器上执行。
 
 Debug 的标准 Android Emulator 解锁页提供“一键解锁测试库”，仅适用于已有合成夹具口令的密码库。它仍经过正常认证，不创建或覆盖密码库；Release 不包含该按钮或合成口令。
 
