@@ -1,149 +1,79 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#244D3C">
-    <meta name="description" content="栖密 Qimi 1.0.0，开源 Android 本地密码管理应用，支持记录编辑与密码生成。查看安装包、源码和已知限制。">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="栖密 · Qimi">
-    <meta property="og:title" content="栖密 Qimi — 密码留在本地，轻松留给日常。">
-    <meta property="og:description" content="栖密 Qimi 1.0.0，开源 Android 本地密码管理应用，支持记录编辑与密码生成。查看安装包、源码和已知限制。">
-    <meta property="og:url" content="https://chenzhiyong1994.github.io/qimi/">
-    <meta property="og:image" content="https://chenzhiyong1994.github.io/qimi/assets/qimi-banner.png">
-    <meta property="og:image:alt" content="栖密本地密码管理应用的产品宣传画面">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://chenzhiyong1994.github.io/qimi/">
-    <link rel="stylesheet" href="styles.css">
-    <title>栖密 Qimi — 密码留在本地，轻松留给日常。</title>
-    <script src="main.js" defer></script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
-    <header class="site-header page-width">
-      <a class="wordmark" href="#" aria-label="栖密 Qimi 首页" data-i18n-aria="homeLabel">
-        <span lang="zh-CN">栖密</span><span class="wordmark-latin" lang="en">QIMI</span>
-      </a>
-      <nav class="primary-nav" aria-label="主导航" data-i18n-aria="navLabel">
-        <a href="#product" data-i18n="navProduct">产品体验</a>
-        <a href="#progress" data-i18n="navProgress">开发进展</a>
-        <a href="https://github.com/chenzhiyong1994/qimi" class="nav-source" data-i18n="navSource">GitHub ↗</a>
-      </nav>
-      <div class="language-switch" role="group" aria-label="选择语言" data-i18n-aria="languageLabel">
-        <button type="button" data-language="zh" aria-pressed="true" lang="zh-CN">中文</button>
-        <button type="button" data-language="en" aria-pressed="false" lang="en">EN</button>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#244d3c">
+  <meta name="description" content="栖密 Qimi 1.0.0，开源 Android 本地密码管理应用。记录与编辑账号，按你的规则生成密码。查看真实界面、安装包与当前限制。">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="栖密 · Qimi">
+  <meta property="og:title" content="栖密 Qimi — 密码留在本地，轻松留给日常。">
+  <meta property="og:description" content="栖密 Qimi 1.0.0，开源 Android 本地密码管理应用。记录与编辑账号，按你的规则生成密码。查看真实界面、安装包与当前限制。">
+  <meta property="og:url" content="https://chenzhiyong1994.github.io/qimi/">
+  <meta property="og:image" content="https://chenzhiyong1994.github.io/qimi/assets/qimi-banner.png">
+  <meta property="og:image:alt" content="栖密本地密码管理应用的品牌宣传插画">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://chenzhiyong1994.github.io/qimi/">
+  <link rel="icon" href="assets/qimi-symbol.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>栖密 Qimi — 密码留在本地，轻松留给日常。</title>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">跳到主要内容</a>
+  <header class="site-header page-width">
+    <a class="wordmark" href="#" aria-label="栖密 Qimi 首页" data-i18n-aria="homeLabel"><img src="assets/qimi-symbol.svg" width="34" height="34" alt=""><span lang="zh-CN">栖密</span><span class="wordmark-latin" lang="en">QIMI</span></a>
+    <nav class="primary-nav" aria-label="主导航" data-i18n-aria="navLabel"><a href="#experience" data-i18n="navProduct">产品体验</a><a href="#local" data-i18n="navLocal">为何本地</a><a href="#release" data-i18n="navRelease">版本与下载</a></nav>
+    <div class="language-switch" role="group" aria-label="选择语言" data-i18n-aria="languageLabel"><button type="button" data-language="zh" aria-pressed="true" lang="zh-CN">中文</button><button type="button" data-language="en" aria-pressed="false" lang="en">EN</button></div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="hero page-width" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <a class="release-pill" href="#release"><span class="status-dot" aria-hidden="true"></span><span data-i18n="releasePill">认识栖密 1.0.0</span><span aria-hidden="true">↗</span></a>
+        <p class="eyebrow" data-i18n="heroEyebrow">ANDROID · 本地密码管理 · 开源</p>
+        <h1 id="hero-title"><span data-i18n="heroLine1">密码留在本地，</span><span class="hero-second-line" data-i18n="heroLine2">轻松留给日常。</span></h1>
+        <p class="hero-description" data-i18n="heroDescription">给零散的账号一个安静的归处。记录、编辑、生成密码，在熟悉的手机里，从容处理日常的小事。</p>
+        <div class="hero-actions"><a class="button button-primary" href="https://github.com/chenzhiyong1994/qimi/releases/download/v1.0.0/qimi-1.0.0.apk"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v4h14v-4"/></svg><span data-i18n="downloadApk">下载 Android 版</span></a><a class="text-link" href="#experience"><span data-i18n="explore">看看实际体验</span><span aria-hidden="true">↓</span></a></div>
+        <p class="release-note"><span>v1.0.0 · Android 10+</span><a href="#limits" data-i18n="readLimits">下载前了解当前限制</a></p>
       </div>
-    </header>
-
-    <main id="main" tabindex="-1">
-      <section class="hero page-width" aria-labelledby="hero-title">
-        <p class="eyebrow"><span>ANDROID</span><span data-i18n="heroEyebrow">本地密码管理 · 开源</span></p>
-        <div class="hero-intro">
-          <h1 id="hero-title"><span data-i18n="heroLine1">密码留在本地，</span><span data-i18n="heroLine2">轻松留给日常。</span></h1>
-          <div class="hero-description">
-            <p data-i18n="heroDescription">给零散的账号一个安心的归处。记录、查找、取用，在熟悉的手机里，完成日常的小事。</p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="https://github.com/chenzhiyong1994/qimi/releases/download/v1.0.0/qimi-1.0.0.apk" data-i18n="downloadApk">下载 Android APK ↗</a>
-              <a class="text-link" href="https://github.com/chenzhiyong1994/qimi/releases/tag/v1.0.0" data-i18n="releaseNotes">1.0.0 发行说明 ↗</a>
-            </div>
-            <p class="release-note" data-i18n="heroStage">版本 1.0.0 · Android 10+ · 请先查看已知限制</p>
-          </div>
+      <figure class="hero-visual">
+        <div class="hero-orbit" aria-hidden="true"></div><span class="visual-label" aria-hidden="true">A QUIET SPACE<br>FOR YOUR PASSWORDS.</span>
+        <div class="phone hero-phone"><img src="assets/qimi-list.png" width="1080" height="2400" fetchpriority="high" alt="栖密 1.0.0 密码库：合成示例记录只显示名称和隐藏的密码" data-i18n-alt="listAlt"></div>
+        <figcaption class="hero-caption"><span class="caption-mark" aria-hidden="true">↳</span><div><strong data-i18n="heroCaption">整齐一点，轻松一点。</strong><span data-i18n="screensNote">1.0.0 真实界面 · 合成资料示例</span></div></figcaption>
+      </figure>
+    </section>
+    <div class="principles page-width" aria-label="产品原则" data-i18n-aria="principlesLabel">
+      <p><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg><span data-i18n="principle1">密码库只在本机</span></p>
+      <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M7 7a5 5 0 0 1 9 2 4 4 0 0 1 4 6M6 9a4 4 0 0 0 0 8h10"/></svg><span data-i18n="principle2">无需云账户与同步</span></p>
+      <p><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg><span data-i18n="principle3">源码开放，边界透明</span></p>
+    </div>
+    <section id="experience" class="experience-section page-width" aria-labelledby="experience-title">
+      <div class="section-heading"><div><p class="eyebrow" data-i18n="productIndex">01 / 日常，简单一点</p><h2 id="experience-title" data-i18n="productTitle">从记下来，<br>到用得上。</h2></div><p class="section-description" data-i18n="productDescription">把账号、密码、网址和备注收在一起。需要改动时随手编辑，需要新密码时按你的规则生成。</p></div>
+      <div class="showcase">
+        <div class="feature-tabs" role="tablist" aria-label="查看应用功能" aria-orientation="vertical" data-i18n-aria="featuresLabel">
+          <button class="feature-tab" id="tab-edit" type="button" role="tab" aria-controls="panel-edit" aria-selected="true" tabindex="0"><span class="feature-number" aria-hidden="true">01</span><span class="feature-copy"><span class="feature-title" data-i18n="editTitle">记下，也方便修改。</span><span class="feature-text" data-i18n="editText">保存过的账号也能继续编辑。五项内容，一张表单；取消修改，原记录依然保留。</span><span class="feature-meta" data-i18n="editMeta">新增记录 / 编辑记录</span></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          <button class="feature-tab" id="tab-generate" type="button" role="tab" aria-controls="panel-generate" aria-selected="false" tabindex="-1"><span class="feature-number" aria-hidden="true">02</span><span class="feature-copy"><span class="feature-title" data-i18n="generateTitle">新密码，按你的规则。</span><span class="feature-text" data-i18n="generateText">简单、普通、复杂，三档任选。也可开启高级自定义，设置长度与字符类型，再选用生成结果。</span><span class="feature-meta" data-i18n="generateMeta">默认普通 / 高级自定义 8–128 位</span></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
+          <button class="feature-tab" id="tab-detail" type="button" role="tab" aria-controls="panel-detail" aria-selected="false" tabindex="-1"><span class="feature-number" aria-hidden="true">03</span><span class="feature-copy"><span class="feature-title" data-i18n="detailTitle">需要时，找到再取用。</span><span class="feature-text" data-i18n="detailText">按名称、账号或网址域名搜索。列表隐藏密码，详情中按需显示、复制，用完再锁好。</span><span class="feature-meta" data-i18n="detailMeta">本地搜索 / 按需查看与复制</span></span><span class="feature-arrow" aria-hidden="true">↗</span></button>
         </div>
-        <figure class="hero-art">
-          <img src="assets/qimi-banner.png" width="1672" height="941" fetchpriority="high" alt="栖密本地密码管理应用的产品宣传画面" data-i18n-alt="bannerAlt">
-          <figcaption><span data-i18n="bannerCaption">为日常留一点从容。</span><span class="small-label">QIMI / LOCAL PASSWORD MANAGER</span></figcaption>
-        </figure>
-        <div class="principles" aria-label="产品原则" data-i18n-aria="principlesLabel">
-          <p data-i18n="principle1">App 不申请网络权限</p>
-          <p data-i18n="principle2">不接入云账户或云同步</p>
-          <p data-i18n="principle3">源码开放，边界透明</p>
+        <div class="showcase-stage">
+          <section id="panel-edit" class="screen-panel" role="tabpanel" aria-labelledby="tab-edit" tabindex="0"><div class="screen-heading"><span class="screen-kicker" data-i18n="screenKicker">在栖密里</span><span class="screen-count" aria-hidden="true">01 / 03</span></div><figure><div class="phone showcase-phone"><img src="assets/qimi-edit.png" width="1080" height="2400" loading="lazy" alt="栖密 1.0.0 编辑账号表单，已填写合成名称和账号，密码保持隐藏" data-i18n-alt="editAlt"></div><figcaption data-i18n="editCaption">改动之前，内容都在。</figcaption></figure></section>
+          <section id="panel-generate" class="screen-panel" role="tabpanel" aria-labelledby="tab-generate" tabindex="0" hidden><div class="screen-heading"><span class="screen-kicker" data-i18n="screenKicker">在栖密里</span><span class="screen-count" aria-hidden="true">02 / 03</span></div><figure><div class="phone showcase-phone"><img src="assets/qimi-generator.png" width="1080" height="2400" loading="lazy" alt="栖密 1.0.0 高级密码生成面板，可设置复杂度、长度与字符类型，候选密码保持隐藏" data-i18n-alt="generatorAlt"></div><figcaption data-i18n="generateCaption">长度与组合，自己决定。</figcaption></figure></section>
+          <section id="panel-detail" class="screen-panel" role="tabpanel" aria-labelledby="tab-detail" tabindex="0" hidden><div class="screen-heading"><span class="screen-kicker" data-i18n="screenKicker">在栖密里</span><span class="screen-count" aria-hidden="true">03 / 03</span></div><figure><div class="phone showcase-phone"><img src="assets/qimi-detail.png" width="1080" height="2400" loading="lazy" alt="栖密 1.0.0 账号详情，提供编辑、显示和复制操作，密码保持隐藏" data-i18n-alt="detailAlt"></div><figcaption data-i18n="detailCaption">默认隐藏，需要时再查看。</figcaption></figure></section>
         </div>
-      </section>
-
-      <section id="product" class="product-section page-width" aria-labelledby="product-title">
-        <div class="section-heading">
-          <p class="section-index" data-i18n="productIndex">01 / 产品体验</p>
-          <div>
-            <h2 id="product-title" data-i18n="productTitle">少一点寻找，<br class="only-zh">多一点从容。</h2>
-            <p class="section-description" data-i18n="productDescription">从一条记录开始，把账号、网址与备注收在一起。需要时，找到它，再决定如何取用。</p>
-          </div>
-        </div>
-        <div class="product-content">
-          <div class="feature-list">
-            <article class="feature-row">
-              <span class="feature-number" aria-hidden="true">01</span>
-              <div><h3 data-i18n="feature1Title">记下，不必复杂。</h3><p data-i18n="feature1Text">名称、账号、密码、网址和备注，一张清楚的表单。支持新增与编辑，按原值保存。</p></div>
-            </article>
-            <article class="feature-row">
-              <span class="feature-number" aria-hidden="true">02</span>
-              <div><h3 data-i18n="feature2Title">找到，刚好用得上。</h3><p data-i18n="feature2Text">按名称搜索，查看完整记录。按需显示或复制密码，用完回到日常。</p></div>
-            </article>
-            <article class="feature-row">
-              <span class="feature-number" aria-hidden="true">03</span>
-              <div><h3 data-i18n="feature3Title">离开，也记得锁好。</h3><p data-i18n="feature3Text">支持主动锁定与后台锁定，密码定时隐藏，敏感剪贴板按规则清理。</p></div>
-            </article>
-            <article class="feature-row">
-              <span class="feature-number" aria-hidden="true">04</span>
-              <div><h3 data-i18n="feature4Title">由你掌握，由源码说话。</h3><p data-i18n="feature4Text">主密码保护本地加密库，不接入云账户。实现、验证记录与待完成事项公开可读。</p></div>
-            </article>
-          </div>
-          <div class="screenshots">
-            <figure class="screen-figure screen-list">
-              <div class="screen-frame"><img src="assets/qimi-list.png" width="1080" height="2400" loading="lazy" alt="栖密 Android 应用的密码列表，展示合成测试账号与本地搜索" data-i18n-alt="listAlt"></div>
-              <figcaption><span class="screen-number">A</span><span data-i18n="listCaption">记录与查找</span></figcaption>
-            </figure>
-            <figure class="screen-figure screen-detail">
-              <div class="screen-frame"><img src="assets/qimi-detail.png" width="1080" height="2400" loading="lazy" alt="栖密 Android 应用的记录详情，密码保持隐藏，提供显示与复制操作" data-i18n-alt="detailAlt"></div>
-              <figcaption><span class="screen-number">B</span><span data-i18n="detailCaption">按需取用</span></figcaption>
-            </figure>
-            <p class="screens-note" data-i18n="screensNote">此前版本真实 App 界面 · 合成资料示例</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="progress" class="progress-section" aria-labelledby="progress-title">
-        <div class="page-width progress-inner">
-          <div class="progress-summary">
-            <p class="section-index" data-i18n="progressIndex">02 / 公开构建</p>
-            <p class="stage-label"><span class="stage-dot" aria-hidden="true"></span><span data-i18n="stageLabel">当前：1.0.0 · S1 功能范围</span></p>
-            <h2 id="progress-title" data-i18n="progressTitle">一小步，<br>认真做好。</h2>
-            <p data-i18n="progressText">已接入本地建库、新增与编辑、搜索、手动取用及基础密码生成。源码现在开放，下一步继续完善备份与恢复。</p>
-            <a class="light-link" href="https://github.com/chenzhiyong1994/qimi/blob/main/docs/project-status.md" data-i18n="readProgress">查看实现与验证记录 ↗</a>
-          </div>
-          <div class="roadmap">
-            <div class="roadmap-row current"><span class="roadmap-step">S1</span><div><p class="roadmap-state" data-i18n="roadmap1State">已实现</p><h3 data-i18n="roadmap1Title">本地建库与手动取用</h3><p data-i18n="roadmap1Text">创建、编辑、加密保存、搜索、显示与复制、后台锁定；新增或编辑账号可用三档或高级规则生成密码。</p></div></div>
-            <div class="roadmap-row"><span class="roadmap-step">S2</span><div><p class="roadmap-state" data-i18n="roadmap2State">下一步 · 尚未实现</p><h3 data-i18n="roadmap2Title">离线备份与验证恢复</h3><p data-i18n="roadmap2Text">加密备份、可读性验证、失败保全，并实测系统备份与设备迁移排除。</p></div></div>
-            <div class="roadmap-row"><span class="roadmap-step">S3—6</span><div><p class="roadmap-state" data-i18n="roadmap3State">后续路线 · 尚未实现</p><h3 data-i18n="roadmap3Title">整理、管理与便利登录</h3><p data-i18n="roadmap3Text">可恢复草稿、历史、生物识别与可信目标自动填充，逐步完成完整 MVP 验收。</p></div></div>
-          </div>
-          <aside class="development-note" aria-labelledby="development-note-title">
-            <h3 id="development-note-title" data-i18n="developmentNoteTitle">当前请只用合成资料测试。</h3>
-            <p data-i18n="developmentNoteText">1.0.0 是发布版本标识。备份恢复、草稿、生物识别与自动填充尚未实现；完整安全审查、系统云备份与设备迁移实测尚未完成，当前版本不用于保管真实密码。</p>
-          </aside>
-        </div>
-      </section>
-
-      <section class="contribute-section page-width" aria-labelledby="contribute-title">
-        <p class="section-index" data-i18n="contributeIndex">03 / 一起打磨</p>
-        <div class="contribute-content">
-          <h2 id="contribute-title" data-i18n="contributeTitle">更好的日常，<br>可以一起写出来。</h2>
-          <div>
-            <p data-i18n="contributeText">如果你也在意本地控制与顺畅体验，欢迎阅读源码、提出可复现的问题，或贡献实现、测试与文档。</p>
-            <p class="contribute-note" data-i18n="contributeNote">提交反馈时请使用合成资料，勿上传真实密码库、密码或密钥。</p>
-            <div class="contribute-actions">
-              <a class="button button-primary" href="https://github.com/chenzhiyong1994/qimi" data-i18n="githubAction">在 GitHub 参与 ↗</a>
-              <a class="button button-outline" href="https://github.com/chenzhiyong1994/qimi/blob/main/README.md" data-language-readme data-i18n="readReadme">阅读 README</a>
-            </div>
-            <a class="text-link build-link" href="https://github.com/chenzhiyong1994/qimi/blob/main/docs/development.md" data-i18n="buildDocs">从源码构建 · 开发文档 ↗</a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer page-width">
-      <div class="footer-brand"><strong lang="zh-CN">栖密</strong><span lang="en">Qimi</span></div>
-      <p data-i18n="footerTagline">密码留在本地，轻松留给日常。</p>
-      <a href="https://github.com/chenzhiyong1994/qimi/blob/main/LICENSE" data-i18n="footerLicense">以 Apache-2.0 开源 ↗</a>
-    </footer>
-    <p id="language-announcement" class="visually-hidden" role="status" aria-live="polite"></p>
-  </body>
+      </div>
+      <p class="screens-note" data-i18n="screensNote">1.0.0 真实界面 · 合成资料示例</p>
+    </section>
+    <section id="local" class="local-section" aria-labelledby="local-title"><div class="local-inner page-width">
+      <div class="local-intro"><p class="eyebrow" data-i18n="localIndex">02 / 留在你的设备里</p><h2 id="local-title" data-i18n="localTitle">少一份连接，<br>多一份自主。</h2><p data-i18n="localDescription">栖密从本地出发。不需要注册云账户，App 不申请网络权限，也不接入云同步。</p><a class="light-link" href="https://github.com/chenzhiyong1994/qimi" data-i18n="viewSource">到 GitHub 查看源码 ↗</a></div>
+      <div class="local-details"><article><span aria-hidden="true">01</span><div><h3 data-i18n="local1Title">一把主密码，本地加密保存。</h3><p data-i18n="local1Text">账号、密码、网址与备注保存在本机加密库中，由你的主密码解锁。</p></div></article><article><span aria-hidden="true">02</span><div><h3 data-i18n="local2Title">暂时离开，也记得锁好。</h3><p data-i18n="local2Text">支持主动锁定与后台锁定。显示的密码会定时隐藏，敏感剪贴板按规则清理。</p></div></article><article><span aria-hidden="true">03</span><div><h3 data-i18n="local3Title">实现与边界，都公开。</h3><p data-i18n="local3Text">源码、验证记录和待完成事项可查阅。本地存储不等于全部安全验证已经完成。</p></div></article></div>
+    </div></section>
+    <section id="release" class="release-section page-width" aria-labelledby="release-title">
+      <div class="release-summary"><p class="eyebrow" data-i18n="releaseIndex">03 / 从这个版本开始</p><h2 id="release-title" data-i18n="releaseTitle">栖密，与你见面。</h2><p class="version-number">1.0.0<span>ANDROID 10+</span></p><a class="button button-primary" href="https://github.com/chenzhiyong1994/qimi/releases/download/v1.0.0/qimi-1.0.0.apk"><span data-i18n="downloadApk">下载 Android 版</span><span aria-hidden="true">↓</span></a><a class="text-link release-notes" href="https://github.com/chenzhiyong1994/qimi/releases/tag/v1.0.0" data-i18n="releaseNotes">发行说明与文件校验 ↗</a></div>
+      <div class="release-details"><p class="release-intro" data-i18n="releaseIntro">已支持本地建库、新增与编辑、密码生成、搜索、显示与复制。下一步，继续完善离线备份与恢复。</p><aside id="limits" class="limits" aria-labelledby="limits-title"><span class="note-label" data-i18n="limitsLabel">使用之前</span><h3 id="limits-title" data-i18n="limitsTitle">请先了解当前边界。</h3><p data-i18n="limitsText">备份恢复、草稿、生物识别与自动填充尚未提供。完整安全审查、系统云备份与设备迁移排除实测仍未完成。</p><p class="limits-important" data-i18n="limitsImportant">当前请仅使用合成资料测试，勿保管真实密码。</p></aside><a class="text-link" href="https://github.com/chenzhiyong1994/qimi/blob/main/docs/project-status.md" data-i18n="readProgress">查看实现与验证记录 ↗</a></div>
+    </section>
+    <section class="contribute-section page-width" aria-labelledby="contribute-title"><div><p class="eyebrow" data-i18n="contributeEyebrow">公开构建，一起参与</p><h2 id="contribute-title" data-i18n="contributeTitle">一起，把日常打磨得更好。</h2><p data-i18n="contributeText">欢迎反馈问题，或贡献代码、测试与文档。反馈中请只使用合成资料。</p></div><a class="button button-outline" href="https://github.com/chenzhiyong1994/qimi" data-i18n="githubAction">在 GitHub 参与 ↗</a></section>
+  </main>
+  <footer class="site-footer page-width"><a class="wordmark" href="#" aria-label="栖密 Qimi 首页" data-i18n-aria="homeLabel"><img src="assets/qimi-symbol.svg" width="28" height="28" alt=""><span lang="zh-CN">栖密</span><span class="wordmark-latin" lang="en">QIMI</span></a><p data-i18n="footerTagline">密码留在本地，轻松留给日常。</p><div class="footer-links"><a href="https://github.com/chenzhiyong1994/qimi/blob/main/README.md" data-language-readme>README ↗</a><a href="https://github.com/chenzhiyong1994/qimi/blob/main/LICENSE">Apache-2.0 ↗</a></div></footer>
+  <p id="language-announcement" class="visually-hidden" role="status" aria-live="polite"></p>
+</body>
 </html>
